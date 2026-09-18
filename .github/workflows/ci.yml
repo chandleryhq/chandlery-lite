@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Manual trigger: re-run CI against any branch when debugging CI itself.
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Lint, typecheck and test in one job: for a single-app repo the extra
+  # install + cf-typegen of a second job costs more than it saves.
+  check:
+    name: biome · typecheck · vitest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      # pnpm version comes from the `packageManager` field in package.json.
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # `wrangler types` merges the keys in .dev.vars into the Env type (secrets
+      # are not declared in wrangler.jsonc). Without this file typecheck fails
+      # with "BETTER_AUTH_URL does not exist". Placeholder values, CI only.
+      - run: |
+          cat > .dev.vars <<'VARS'
+          BETTER_AUTH_URL=http://localhost:3000
+          BETTER_AUTH_SECRET=ci-secret-not-for-production
+          VARS
+      # worker-configuration.d.ts is a gitignored build product (Cloudflare
+      # namespace, D1Database, KVNamespace types...). Regenerate on every run.
+      - run: pnpm cf-typegen
+      - run: pnpm check
+      - run: pnpm typecheck
+      # vite transform cache keyed by the lockfile; source changes still reuse
+      # most of it through restore-keys.
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.vite
+          key: vite-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            vite-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+            vite-${{ runner.os }}-
+      # vitest runs inside workerd, one isolate per test file. No remote resources.
+      - run: pnpm test

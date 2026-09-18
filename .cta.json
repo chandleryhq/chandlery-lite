@@ -1,0 +1,32 @@
+{
+  "projectName": "chandlery-lite",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "git": false,
+  "install": false,
+  "intent": true,
+  "addOnOptions": {
+    "drizzle": {
+      "database": "sqlite"
+    }
+  },
+  "projectPreset": "default",
+  "includeExamples": false,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "shadcn",
+    "tanstack-query",
+    "form",
+    "table",
+    "store",
+    "oRPC",
+    "drizzle",
+    "better-auth",
+    "biome",
+    "cloudflare"
+  ]
+}

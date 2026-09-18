@@ -1,0 +1,9 @@
+# Copy to .dev.vars (gitignored). Remote environments use `wrangler secret put <NAME>`.
+# Keys listed here are also merged into the Env type by `pnpm cf-typegen`.
+
+# Better Auth secret (required). Generate with: openssl rand -base64 32
+BETTER_AUTH_SECRET=
+# The origin your users hit. Leave it empty and the origin is read from the request,
+# which is what makes a one-click deploy work before you have a domain. Set it once
+# you do: an origin you pinned beats one inferred from a header.
+BETTER_AUTH_URL=
