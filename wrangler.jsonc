@@ -18,7 +18,7 @@
 	// Thin wrapper around the TanStack Start server entry so that cron, Durable
 	// Objects, Queues and Workflows can be exported from the same Worker.
 	"main": "src/server/entry.ts",
-	"compatibility_date": "2026-09-17",
+	"compatibility_date": "2026-10-19",
 	"compatibility_flags": ["nodejs_compat"],
 	"observability": { "enabled": true },
 	// D1 lives in a single region; Smart Placement moves the Worker next to it so a

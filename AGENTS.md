@@ -17,7 +17,7 @@ Full-stack TanStack Start app deployed to **Cloudflare Workers** with **D1** as 
 | UI | shadcn/ui + Tailwind v4 + lucide-react |
 | Validation | zod 4 |
 | Tests | vitest on workerd (`@cloudflare/vitest-plugin`), real D1 / KV / R2 emulation |
-| Tooling | pnpm 10.33.4, Biome (format + lint), TypeScript, Wrangler 4 |
+| Tooling | pnpm 11.1.2, Biome (format + lint), TypeScript, Wrangler 4 |
 
 ## Directory layout
 
