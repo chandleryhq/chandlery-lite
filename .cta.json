@@ -1,5 +1,5 @@
 {
-  "projectName": "chandlery-starter",
+  "projectName": "chandlery-lite",
   "mode": "file-router",
   "bundler": "vite",
   "typescript": true,
